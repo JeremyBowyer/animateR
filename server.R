@@ -19,6 +19,7 @@ source("server-modules/methods.R", local=TRUE)
 source("server-modules/aggregation.R", local=TRUE)
 source("server-modules/data-preview.R", local=TRUE)
 source("server-modules/conditions.R",local=TRUE)
+source("server-modules/animated-chart.R",local=TRUE)
 
 # Define Functions
 source("https://raw.githubusercontent.com/JeremyBowyer/Quintile-Function/master/Quintile_Function.R")
@@ -81,5 +82,10 @@ shinyServer(function(input, output, session) {
   # Data Preview Screen #
   #######################
   dataPreview(input, output, session, vals)
+  
+  #########
+  # Chart #
+  #########
+  animatedChart(input, output, session, vals)
   
 })

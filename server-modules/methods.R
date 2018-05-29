@@ -18,7 +18,7 @@ loadMethods <- function(input, output, session, vals) {
                                )
         }
 
-        for(col in c(vals$inputLIst, transformInputs)) {
+        for(col in c(vals$inputList, transformInputs)) {
             updateSelectInput(session, col, choices=vals$getCols(), selected=input[[col]])
         }
     }

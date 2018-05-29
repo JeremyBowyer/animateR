@@ -26,8 +26,6 @@ optionsPage <- function() {
               selectInput("categoryCol", "Select Color column", choices=list("", "Please upload data first.")),
               selectInput("sizeCol", "Select Size column", choices=list("", "Please upload data first.")),
               selectInput("framesCol", "Select Frames column", choices=list("", "Please upload data first.")),
-              tags$hr(),
-              actionButton("run", "Create Chart", style="color: #fff; background-color: rgb(2, 140, 7); border: solid 1px #005a03;"),
               style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
               )
             ),
