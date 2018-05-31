@@ -30,6 +30,16 @@ optionsPage <- function() {
               )
             ),
           tabPanel(
+            "Chart Options",
+            tags$div(
+              h3("Chart Options"),
+              numericInput("frameDur", "Frame Duration", value=1000, min=0, step=1),
+              numericInput("transitionDur", "Transition Duration", value=1000, min=0, step=1),
+              selectInput("easingFunc", "Select Easing Function", choices=easingFuncList),
+              style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+              )
+          ),
+          tabPanel(
               "Date Aggregation",
               tags$div(
                 h3("Date Aggregation"),
@@ -107,6 +117,7 @@ optionsPage <- function() {
             )
           ),
         tags$hr(),
+        actionButton("drawChart", "Draw Chart", style="color: #fff; background-color: rgb(2, 140, 7); border: solid 1px #005a03;"),
         tags$head(
           tags$script(HTML('Shiny.addCustomMessageHandler("conditionalFormatting", function(message) { eval(message.value); });')),
           tags$script(src="loading_screen.js"),
