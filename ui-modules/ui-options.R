@@ -21,6 +21,7 @@ optionsPage <- function() {
             "Column Selection",
             tags$div(
               h3("Column Selection"),
+              selectInput("idCol", "Select ID column", choices=list("", "Please upload data first.")),
               selectInput("yCol", "Select Y-axis column", choices=list("", "Please upload data first."), selected=""),
               selectInput("xCol", "Select X-axis column", choices=list("", "Please upload data first."), selected=""),
               selectInput("categoryCol", "Select Color column", choices=list("", "Please upload data first.")),

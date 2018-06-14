@@ -20,7 +20,7 @@ vals <- reactiveValues(
     dateCol = "",
     dateFormat = "%m/%d/%Y",
     IsAggregated = FALSE,
-    inputList = c("yCol", "xCol", "categoryCol", "sizeCol", "framesCol", "dateAggDateCol", "groupByCols")
+    inputList = c("yCol", "xCol", "idCol", "categoryCol", "sizeCol", "framesCol", "dateAggDateCol", "groupByCols")
     )
 
 transformationList = list("Difference" = "diff",
