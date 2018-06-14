@@ -2,7 +2,7 @@ optionsPage <- function() {
   
   tabPanel(
     "Options",
-    value = "options",
+    value = "optionsPage",
     sidebarLayout(
       sidebarPanel(
         useShinyalert(),
@@ -32,13 +32,39 @@ optionsPage <- function() {
             ),
           tabPanel(
             "Chart Options",
-            tags$div(
-              h3("Chart Options"),
-              numericInput("frameDur", "Frame Duration", value=1000, min=0, step=1),
-              numericInput("transitionDur", "Transition Duration", value=1000, min=0, step=1),
-              selectInput("easingFunc", "Select Easing Function", choices=easingFuncList),
-              style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+            tabsetPanel(
+              tabPanel(
+                "Motion Options",
+                tags$div(
+                  numericInput("frameDur", "Frame Duration", value=1000, min=0, step=1),
+                  numericInput("transitionDur", "Transition Duration", value=1000, min=0, step=1),
+                  selectInput("easingFunc", "Select Easing Function", choices=easingFuncList),
+                  style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+                )
+              ),
+              tabPanel(
+                "Aesthetic Options",
+                tags$div(
+                  numericInput("minSize", "Minimum Bubble Size", value=1, min=0, step=1),
+                  numericInput("maxSize", "Maximum Bubble Size", value=6, min=1, step=1),
+                  style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+                )
+              ),
+              tabPanel(
+                "Labels",
+                tags$div(
+                  textInput("xLabel", "X Axis Label", value=""),
+                  textInput("yLabel", "Y Axis Label", value=""),
+                  textInput("colorLabel", "Color Legend Label", value=""),
+                  textInput("sizeLabel", "Size Legend Label", value=""),
+                  textInput("frameLabel", "Current Frame Slider Prefix", value=""),
+                  textInput("titleLabel", "Chart Title", value=""),
+                  textInput("subtitleLabel", "Chart Subtitle", value=""),
+                  textInput("captionLabel", "Chart Caption", value=""),
+                  style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+                )
               )
+            )
           ),
           tabPanel(
             "Change Data",
@@ -131,7 +157,11 @@ optionsPage <- function() {
           )
         ),
       mainPanel(
-        plotlyOutput("animatedChart")
+        DTOutput("dataPreview", height = "auto"),
+        conditionalPanel(
+                    condition = "output.fileUploaded",
+                        downloadButton('downloadData', 'Download Customized Data')
+                    )
         )
       )
     )

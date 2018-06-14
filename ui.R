@@ -8,7 +8,7 @@ library(DT)
 
 source("global.R", local=TRUE)
 source("ui-modules/ui-options.R", local=TRUE)
-source("ui-modules/ui-datapreview.R", local=TRUE)
+source("ui-modules/ui-chart.R", local=TRUE)
 
 shinyUI(
   navbarPage(
@@ -17,6 +17,6 @@ shinyUI(
     fluid = TRUE,
     id = "mainTabset",
     optionsPage(),
-    dataPreviewPage()
+    chartPage()
   )
 )

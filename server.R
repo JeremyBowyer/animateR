@@ -87,5 +87,6 @@ shinyServer(function(input, output, session) {
   # Chart #
   #########
   animatedChart(input, output, session, vals)
+  observeDrawChart(input, output, session, vals)
   
 })
