@@ -16,6 +16,9 @@ animatedChart <- function(input, output, session, vals) {
       sizeCol = input$sizeCol
       categoryCol = input$categoryCol
       framesCol = input$framesCol
+      frameDur = input$frameDur
+      transitionDur = input$transitionDur
+      easingFunc = input$easingFunc
       
       # Subset uploaded data to ignore NAs in relevant columns
       df <- vals$datadf[, unique(c(xCol, yCol, idCol, sizeCol, categoryCol, framesCol))]
@@ -32,38 +35,20 @@ animatedChart <- function(input, output, session, vals) {
       skeleton <- merge(skeleton, df, all.x=TRUE)
       skeleton <- skeleton[order(skeleton[,idCol], skeleton[,framesCol]), ]
 
-      # Create Opacity column
-      skeleton$opacity <- 0
-      skeleton[!rowSums(is.na(skeleton[, 3:4])), "opacity"] <- 1
-      
-      # Fill NAs
-      fillNAs <- function(x) {
-        x <- na.locf(x, fromLast=TRUE, na.rm=FALSE)
-        x <- na.locf(x, fromLast=FALSE, na.rm=FALSE)
-        return(x)
-      }
-      
-      for(col in c(xCol, yCol, sizeCol, categoryCol)) {
-        skeleton[[col]] <- unlist(aggregate(skeleton[[col]], by=list(rev(skeleton[[idCol]])), FUN=fillNAs, simplify=FALSE)[["x"]])
-      }
-
       # Create Chart
-      xForm <- as.formula(paste0("~",input$xCol))
-      yForm <- as.formula(paste0("~",input$yCol))
-      xyFormula <- as.formula(paste0(yCol,"~",xCol))
-      idForm <- as.formula(paste0("~",input$idCol))
-      sizeForm <- as.formula(paste0("~",input$sizeCol))
-      colorForm <- if(input$categoryCol != "") as.formula(paste0("~", input$categoryCol)) else as.formula(paste0("~", input$xCol))
-      frameForm <- as.formula(paste0("~", input$framesCol))
-    
+      x <- skeleton[[xCol]]
+      y <- skeleton[[yCol]]
+      id <- skeleton[[idCol]]
+      size <- skeleton[[sizeCol]]
+      color <- if(categoryCol != "") skeleton[[categoryCol]] else skeleton[[xCol]]
+      frame <- skeleton[[framesCol]]
       
-      p <- plot_ly(data=skeleton, x=xForm, y=yForm, size=sizeForm, color=colorForm, text=colorForm, frame=frameForm, type = 'scatter', mode = 'markers')
-      # p <- 
-      #   ggplot(skeleton, aes(x=skeleton[[input$xCol]],y=input$yCol, color = input$categoryCol)) +
-      #   geom_point(aes(frame = input$framesCol)) + theme_bw()
-      # 
-      # p <- ggplotly(p)
-      p <- p %>% animation_opts(frame=input$frameDur, transition=input$transitionDur, easing=input$easingFunc, redraw=FALSE, mode="next")
+      p <-
+        ggplot(skeleton, aes(x=x,y=y, color=color, size=size, frame=frame)) +
+        geom_point() + theme_bw()
+
+      p <- ggplotly(p)
+      p <- p %>% animation_opts(frame=frameDur, transition=transitionDur, easing=easingFunc, redraw=FALSE, mode="next")
       p
     })
     
