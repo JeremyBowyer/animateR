@@ -24,21 +24,38 @@ animatedChart <- function(input, output, session, vals) {
       # Aesthetic Options
       minSize = input$minSize
       maxSize = input$maxSize
+      # Layout
+      width = if(input$chartWidth == "") 1920 else as.numeric(input$chartWidth)
+      height = if(input$chartHeight == "") 900 else as.numeric(input$chartHeight)
+      legendPosition = input$legendPosition
       
       # Subset uploaded data to ignore NAs in relevant columns
       df <- vals$datadf[, unique(c(xCol, yCol, idCol, sizeCol, categoryCol, framesCol))]
       df <- df[!is.na(df[,framesCol]) & !is.na(df[, idCol]), ]
 
       # Create skeleton dataframe
-      frames <- unique(as.character(df[,framesCol]))
-      ids <- unique(as.character(df[,idCol]))
+      frames <- unique(df[,framesCol])
+      ids <- unique(df[,idCol])
       
       skeleton <- merge(frames, ids, all=TRUE)
       names(skeleton) <- c(framesCol, idCol)
-
+      
       # Add data to skeleton dataframe
       skeleton <- merge(skeleton, df, all.x=TRUE)
       skeleton <- skeleton[order(skeleton[,idCol], skeleton[,framesCol]), ]
+      
+      # If frame is date column, format it properly
+      if(input$dateCheckBox) {
+        dateFormat <- input$dateColFormat
+            
+        if(length(grep("%d", dateFormat)) == 0){
+          fullDateFormat <- paste0('%d-', dateFormat)
+          skeleton[,framesCol] <- paste0("1-", as.character(skeleton[, framesCol]))
+        } else {
+          fullDateFormat <- dateFormat
+        }
+        skeleton[,framesCol] <- as.Date(as.character(skeleton[, framesCol]), format = fullDateFormat)
+      }
 
       # Create Chart
       x <- skeleton[[xCol]]
@@ -67,12 +84,13 @@ animatedChart <- function(input, output, session, vals) {
         labs(x=xLabel,
              y=yLabel,
              size=sizeLabel,
+             #color=colorLabel,
              title=title,
              subtitle=subtitle,
              caption=caption) +
-        theme_bw()
-
-      p <- ggplotly(p)
+        theme(legend.position=legendPosition)
+      print(prefixLabel)
+      p <- ggplotly(p, width=width, height=height)
       p <- p %>% animation_opts(frame=frameDur, transition=transitionDur, easing=easingFunc, redraw=FALSE, mode="next")
       p <- p %>% animation_slider(
         currentvalue = list(
@@ -113,3 +131,4 @@ observeDrawChart <- function(input, output, session, vals) {
   })
   
 }
+

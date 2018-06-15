@@ -7,6 +7,7 @@ library(quantmod)
 library(XLConnect)
 library(DT)
 library(lubridate)
+library(chron)
 options(shiny.deprecation.messages=FALSE)
 options(stringsAsFactors = FALSE)
 

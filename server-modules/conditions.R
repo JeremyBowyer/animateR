@@ -65,4 +65,9 @@ loadConditions <- function(input, output, session, vals) {
 	  return(input$pointFilterCheck)
 	})
 	outputOptions(output,'pointFilterCheck', suspendWhenHidden=FALSE)
+	
+	output$dateFrameCheck <- reactive({
+	  return(input$dateCheckBox)
+	})
+	outputOptions(output, 'dateFrameCheck', suspendWhenHidden=FALSE)
 }

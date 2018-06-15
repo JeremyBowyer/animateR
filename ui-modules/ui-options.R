@@ -26,7 +26,18 @@ optionsPage <- function() {
               selectInput("xCol", "Select X-axis column", choices=list("", "Please upload data first."), selected=""),
               selectInput("categoryCol", "Select Color column", choices=list("", "Please upload data first.")),
               selectInput("sizeCol", "Select Size column", choices=list("", "Please upload data first.")),
-              selectInput("framesCol", "Select Frames column", choices=list("", "Please upload data first.")),
+              tags$div(
+                tags$div(selectInput("framesCol", "Select Frames column", choices=list("", "Please upload data first.")),
+                         style="display:inline-block;width:80%"
+                ),
+                tags$div(checkboxInput("dateCheckBox", "Is Date", value=FALSE),
+                         style="display:inline-block;vertical-align:middle;padding-bottom: 15px;"
+                )
+              ),
+              conditionalPanel(
+                condition = "output.dateFrameCheck",
+                textInput("dateColFormat", "Format dates are in (check data preview to the right)", "%m/%d/%Y")
+              ),
               style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
               )
             ),
@@ -61,6 +72,19 @@ optionsPage <- function() {
                   textInput("titleLabel", "Chart Title", value=""),
                   textInput("subtitleLabel", "Chart Subtitle", value=""),
                   textInput("captionLabel", "Chart Caption", value=""),
+                  style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
+                )
+              ),
+              tabPanel(
+                "Layout",
+                tags$div(
+                  numericInput("chartWidth", "Chart Width", value=1920, min=0, step=1),
+                  numericInput("chartHeight", "Chart Height", value=900, min=0, step=1),
+                  selectInput("legendPosition", "Select Legend Position", choices = list("Right" = "right",
+                                                                                         "Left" = "left",
+                                                                                         "Bottom" = "bottom",
+                                                                                         "Top" = "top",
+                                                                                         "None" = "none")),
                   style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
                 )
               )
