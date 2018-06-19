@@ -88,17 +88,26 @@ animatedChart <- function(input, output, session, vals) {
       # Labels
       xLabel = if(input$xLabel == "") xCol else input$xLabel
       yLabel = if(input$yLabel == "") yCol else input$yLabel
-      colorLabel = if(input$colorLabel == "") categoryCol else input$colorLabel
-      colorLabel = paste0("Color: ", colorLabel)
-      sizeLabel = if(input$sizeLabel == "") sizeCol else input$sizeLabel
-      sizeLabel = paste0("Size: ", sizeLabel)
-      prefixLabel = paste0(input$frameLabel, " ")
+      colorLabelCol = if(input$colorLabel == "") categoryCol else input$colorLabel
+      colorLabel = paste0("Color: ", colorLabelCol)
+      sizeLabelCol = if(input$sizeLabel == "") sizeCol else input$sizeLabel
+      sizeLabel = paste0("Size: ", sizeLabelCol)
+      prefixLabel = paste0(input$frameLabel, "Frame: ")
       title = input$titleLabel
       subtitle = input$subtitleLabel 
       caption = input$captionLabel 
       
+      # Tooltip
+      tooltip = paste0('<span style="font-weight: 600; font-size: 15px; text-align: center;">', id, "</span><br>",
+                       '<span style="font-weight: 600;">', xLabel, ":</span> ", x, "<br>",
+                       '<span style="font-weight: 600;">', yLabel, ":</span> ", y, "<br>",
+                       '<span style="font-weight: 600;">', sizeLabelCol, ":</span> ", size, "<br>",
+                       '<span style="font-weight: 600;">', colorLabelCol, ":</span> ", color, "<br>",
+                       '<span style="font-weight: 600;">', prefixLabel, "</span>", frame
+                       )
+      
       p <-
-        ggplot(skeleton, aes(x=x,y=y, color=color, size=size, frame=frame)) +
+        ggplot(skeleton, aes(x=x,y=y, color=color, size=size, frame=frame, text=tooltip)) +
         geom_point() +
         scale_size(range=c(minSize, maxSize)) +
         labs(x=xLabel,
@@ -111,7 +120,7 @@ animatedChart <- function(input, output, session, vals) {
         theme(legend.position=legendPosition) + 
         user_theme
 
-      p <- ggplotly(p, width=width, height=height)
+      p <- ggplotly(p, width=width, height=height, tooltip="text")
       p <- p %>% animation_opts(frame=frameDur, transition=transitionDur, easing=easingFunc, redraw=FALSE, mode="next")
       p <- p %>% animation_slider(
         currentvalue = list(

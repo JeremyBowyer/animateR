@@ -36,6 +36,14 @@ div[data-value="Instructions"] table th {
 	cursor: pointer;
 }
 
+.centered {
+	text-align: center;
+}
+
+.bold {
+	font-weight: 600;
+}
+
 /* Loading Screen */
 .frame {
     position: fixed;
