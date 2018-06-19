@@ -27,6 +27,15 @@ div[data-value="Instructions"] table th {
 	height: auto !important;
 }
 
+/* Plotly Styling */
+.cursor-crosshair {
+	cursor: default !important;
+}
+
+.trace.scatter {
+	cursor: pointer;
+}
+
 /* Loading Screen */
 .frame {
     position: fixed;

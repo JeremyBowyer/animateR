@@ -58,6 +58,9 @@ optionsPage <- function() {
                 tags$div(
                   numericInput("minSize", "Minimum Bubble Size", value=1, min=0, step=1),
                   numericInput("maxSize", "Maximum Bubble Size", value=6, min=1, step=1),
+                  numericInput("fontSize", "Base Font Size", value=11, min=1, step=1),
+                  textInput("fontFamily", "Font Family", value="Roboto"),
+                  selectInput("theme", "Select a theme", choices=themeList),
                   style="padding: 5px 20px 20px 20px; background: #e4dfd6; border: 1px solid #b5b3b0; margin: 10px 0 0 0; border-radius: 5px;"
                 )
               ),

@@ -8,6 +8,7 @@ library(XLConnect)
 library(DT)
 library(lubridate)
 library(chron)
+library(htmlwidgets)
 options(shiny.deprecation.messages=FALSE)
 options(stringsAsFactors = FALSE)
 

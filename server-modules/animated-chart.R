@@ -1,5 +1,23 @@
 animatedChart <- function(input, output, session, vals) {
   
+  themeGenerator <- function(theme, fontSize, font) {
+    
+    if (theme == "") return(theme_classic(fontSize, font))
+    
+    switch(theme,
+           grey = { return(theme_grey(fontSize, font)) },
+           bw = { return(theme_bw(fontSize, font)) },
+           linedraw = { return(theme_linedraw(fontSize, font)) },
+           light = { return(theme_light(fontSize, font)) },
+           dark = { return(theme_dark(fontSize, font)) },
+           minimal = { return(theme_minimal(fontSize, font)) },
+           classic = { return(theme_classic(fontSize, font)) },
+           void = { return(theme_void(fontSize, font)) }
+         )
+    
+    
+  }
+  
   output$animatedChart <- renderPlotly({
   
     input$drawChart
@@ -24,6 +42,8 @@ animatedChart <- function(input, output, session, vals) {
       # Aesthetic Options
       minSize = input$minSize
       maxSize = input$maxSize
+      user_theme <- themeGenerator(input$theme, input$fontSize, input$fontFamily)
+
       # Layout
       width = if(input$chartWidth == "") 1920 else as.numeric(input$chartWidth)
       height = if(input$chartHeight == "") 900 else as.numeric(input$chartHeight)
@@ -88,8 +108,9 @@ animatedChart <- function(input, output, session, vals) {
              title=title,
              subtitle=subtitle,
              caption=caption) +
-        theme(legend.position=legendPosition)
-      print(prefixLabel)
+        theme(legend.position=legendPosition) + 
+        user_theme
+
       p <- ggplotly(p, width=width, height=height)
       p <- p %>% animation_opts(frame=frameDur, transition=transitionDur, easing=easingFunc, redraw=FALSE, mode="next")
       p <- p %>% animation_slider(

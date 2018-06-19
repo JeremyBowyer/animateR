@@ -81,6 +81,15 @@ easingFuncList = list('Linear' = 'linear',
                       'Back-In-Out' = 'back-in-out',
                       'Bounce-In-Out' = 'bounce-in-out')
 
+themeList = list("Grey" = "grey",
+                 "Black & White" = "bw",
+                 "Linedraw" = "linedraw",
+                 "Light" = "light", 
+                 "Dark" = "dark", 
+                 "Minimal" = "minimal", 
+                 "Classic" = "classic", 
+                 "Void" = "void")
+
 filterList = list("Value Filter" = "valueFilter",
                   "Percentile Filter" = "percentileFilter",
                   "Date Filter" = "dateFilter")
