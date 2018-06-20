@@ -26,7 +26,7 @@ animatedChart <- function(input, output, session, vals) {
       if(input$xCol == "" || input$yCol == "" || input$categoryCol == "") {
         return(NULL)
       }
-      
+
       # Gather Inputs #
       # Columns
       xCol = input$xCol
@@ -92,7 +92,7 @@ animatedChart <- function(input, output, session, vals) {
       colorLabel = paste0("Color: ", colorLabelCol)
       sizeLabelCol = if(input$sizeLabel == "") sizeCol else input$sizeLabel
       sizeLabel = paste0("Size: ", sizeLabelCol)
-      prefixLabel = paste0(input$frameLabel, "Frame: ")
+      prefixLabel = if(input$frameLabel == "") "Frame: " else input$frameLabel
       title = input$titleLabel
       subtitle = input$subtitleLabel 
       caption = input$captionLabel 
@@ -105,7 +105,7 @@ animatedChart <- function(input, output, session, vals) {
                        '<span style="font-weight: 600;">', colorLabelCol, ":</span> ", color, "<br>",
                        '<span style="font-weight: 600;">', prefixLabel, "</span>", frame
                        )
-      
+
       p <-
         ggplot(skeleton, aes(x=x,y=y, color=color, size=size, frame=frame, text=tooltip)) +
         geom_point() +
@@ -119,7 +119,6 @@ animatedChart <- function(input, output, session, vals) {
              caption=caption) +
         theme(legend.position=legendPosition) + 
         user_theme
-
       p <- ggplotly(p, width=width, height=height, tooltip="text")
       p <- p %>% animation_opts(frame=frameDur, transition=transitionDur, easing=easingFunc, redraw=FALSE, mode="next")
       p <- p %>% animation_slider(
